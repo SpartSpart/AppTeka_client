@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="passwordkeeperclient.spart.ru.password_keeper_client">
+    package="apptekaclient.spart.ru.appteka_client">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".EnterActivity"
+            android:name="apptekaclient.spart.ru.appteka_client.activity.EnterActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,9 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegistrationActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name="apptekaclient.spart.ru.appteka_client.activity.RegistrationActivity" />
+        <activity android:name="apptekaclient.spart.ru.appteka_client.activity.SettingsActivity" />
+        <activity android:name="apptekaclient.spart.ru.appteka_client.activity.MainActivity" />
     </application>
 
 </manifest>

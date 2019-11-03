@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Password-Keeper</string>
+    <string name="app_name">AppTeka</string>
     <string name="action_settings">Settings</string>
     <string name="signInText">Sign In</string>
     <string name="login">Login</string>
