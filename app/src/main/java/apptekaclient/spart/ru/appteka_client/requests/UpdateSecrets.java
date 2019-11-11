@@ -8,18 +8,18 @@ import java.util.List;
 
 import apptekaclient.spart.ru.appteka_client.api.ApiConnection;
 import apptekaclient.spart.ru.appteka_client.api.ApiService;
-import apptekaclient.spart.ru.appteka_client.api.model.SecretModel;
+import apptekaclient.spart.ru.appteka_client.api.model.DrugModel;
 import retrofit2.Call;
 import retrofit2.Response;
 
 
 public class UpdateSecrets extends AsyncTask<Void, Void, Boolean> {
     private String authorization;
-    private List<SecretModel> secretModels;
+    private List<DrugModel> drugModels;
 
-    public UpdateSecrets(String authorization, List<SecretModel> secretModels) {
+    public UpdateSecrets(String authorization, List<DrugModel> drugModels) {
         this.authorization = authorization;
-        this.secretModels = secretModels;
+        this.drugModels = drugModels;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class UpdateSecrets extends AsyncTask<Void, Void, Boolean> {
         ApiService apiService = ApiConnection.getApiService();
 
         String authHeader = "Basic " + Base64.encodeToString(authorization.getBytes(), Base64.NO_WRAP);
-        Call<Void> call = apiService.updateSecrets(authHeader, secretModels);
+        Call<Void> call = apiService.updateSecrets(authHeader, drugModels);
         try {
             Response<Void> response = call.execute();
             if (response.isSuccessful())

@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="apptekaclient.spart.ru.appteka_client.activity.EnterActivity"
+            android:name=".activity.DrugListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,9 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="apptekaclient.spart.ru.appteka_client.activity.RegistrationActivity" />
-        <activity android:name="apptekaclient.spart.ru.appteka_client.activity.SettingsActivity" />
-        <activity android:name="apptekaclient.spart.ru.appteka_client.activity.MainActivity" />
+        <activity android:name=".activity.RegistrationActivity" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity
+            android:name=".activity.EnterActivity"
+            android:label="@string/title_activity_drug_list"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

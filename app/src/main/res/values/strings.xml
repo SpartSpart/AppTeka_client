@@ -16,6 +16,7 @@
     <string name="port">Enter Server Port</string>
     <string name="save">Save</string>
     <string name="action_save">Save</string>
+    <string name="title_activity_drug_list">DrugListActivity</string>
 
 
 </resources>

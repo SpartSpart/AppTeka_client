@@ -2,13 +2,14 @@ package apptekaclient.spart.ru.appteka_client.listview;
 
 import android.view.View;
 import android.widget.Toast;
-import apptekaclient.spart.ru.appteka_client.listview.model.ListViewModel;
+
+import apptekaclient.spart.ru.appteka_client.listview.model.DrugListViewModel;
 
 public class ListOnLongClickListener implements View.OnLongClickListener {
 
-    private ListViewModel listViewModel;
+    private DrugListViewModel listViewModel;
 
-    ListOnLongClickListener(ListViewModel listViewModel) {
+    ListOnLongClickListener(DrugListViewModel listViewModel) {
         this.listViewModel = listViewModel;
 
     }
@@ -17,7 +18,7 @@ public class ListOnLongClickListener implements View.OnLongClickListener {
     @Override //first variant of longClick
     public boolean onLongClick(View v) {
         Toast.makeText(v.getContext(),
-                listViewModel.getDescription() + "\n" + listViewModel.getLogin() + "\n" + listViewModel.getPassword(),
+                listViewModel.getId() + "\n" + listViewModel.getName(),
                 Toast.LENGTH_SHORT).show();
         return true;
     }

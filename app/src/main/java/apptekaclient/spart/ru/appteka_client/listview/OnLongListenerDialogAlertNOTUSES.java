@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import apptekaclient.spart.ru.appteka_client.listview.model.ListViewModel;
+import apptekaclient.spart.ru.appteka_client.listview.model.DrugListViewModel;
 
 /**
  * Created by Pamela on 15.11.2018.
@@ -15,10 +15,10 @@ import apptekaclient.spart.ru.appteka_client.listview.model.ListViewModel;
 
 public class OnLongListenerDialogAlertNOTUSES implements View.OnLongClickListener {
 
-    ListViewModel listViewModel;
+    DrugListViewModel listViewModel;
     Context context;
 
-    public OnLongListenerDialogAlertNOTUSES(ListViewModel listViewModel, Context context) {
+    public OnLongListenerDialogAlertNOTUSES(DrugListViewModel listViewModel, Context context) {
         this.listViewModel = listViewModel;
         this.context = context;
     }
@@ -77,7 +77,7 @@ public class OnLongListenerDialogAlertNOTUSES implements View.OnLongClickListene
 //                try {
 //                    Long id = addSecret.execute().get();
 //                    if (id != null) {
-//                        listViewModels.add(new ListViewModel(id,
+//                        listViewModels.add(new DrugListViewModel(id,
 //                                descriptionText.getText().toString(),
 //                                loginText.getText().toString(),
 //                                passwordText.getText().toString()));

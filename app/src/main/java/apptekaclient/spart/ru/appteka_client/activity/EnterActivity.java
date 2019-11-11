@@ -47,7 +47,7 @@ public class EnterActivity extends AppCompatActivity {
                 sessionId = logIn.execute().get();
                 if (sessionId != null) {
                     Toast.makeText(getApplicationContext(), "Login Correct", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getBaseContext(),MainActivity.class);
+                    Intent intent = new Intent(getBaseContext(),DrugListActivity.class);
                     intent.putExtra("Authorization", authorization);
                     Crypto.setKeys(login.getText().toString(),password.getText().toString());
 //                    new Crypto().setKey(login.getText().toString());

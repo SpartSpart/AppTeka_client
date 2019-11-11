@@ -4,14 +4,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 
 import apptekaclient.spart.ru.appteka_client.activity.MainActivity;
-import apptekaclient.spart.ru.appteka_client.listview.model.ListViewModel;
+import apptekaclient.spart.ru.appteka_client.listview.model.DrugListViewModel;
 
 public class ListTextWatcher implements TextWatcher {
-    private ListViewModel listViewModel;
+    private DrugListViewModel listViewModel;
     private String atributeType;
     private int position;
 
-    ListTextWatcher(ListViewModel listViewModel, int position, String atributeType) {
+    ListTextWatcher(DrugListViewModel listViewModel, int position, String atributeType) {
         this.listViewModel = listViewModel;
         this.atributeType = atributeType;
         this.position = position;
@@ -30,18 +30,11 @@ public class ListTextWatcher implements TextWatcher {
     public void afterTextChanged(Editable s) {
 
         switch (atributeType) {
-            case "DESCRIPTION": {
-                listViewModel.setDescription(s.toString());
+            case "NAME": {
+                listViewModel.setName(s.toString());
                 break;
             }
-            case "LOGIN": {
-                listViewModel.setLogin(s.toString());
-                break;
-            }
-            case "PASSWORD": {
-                listViewModel.setPassword(s.toString());
-                break;
-            }
+
         }
 
         MainActivity.changedID.add(position);
