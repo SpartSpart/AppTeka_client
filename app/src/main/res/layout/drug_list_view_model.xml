@@ -9,11 +9,11 @@
 
 
 
-    <CheckBox
-        android:id="@+id/cbBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </CheckBox>
+    <!--<CheckBox-->
+        <!--android:id="@+id/cbBox"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--</CheckBox>-->
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"

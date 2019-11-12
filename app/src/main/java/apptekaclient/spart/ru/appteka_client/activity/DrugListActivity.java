@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -31,32 +32,28 @@ public class DrugListActivity extends AppCompatActivity {
         return true;
     }
 
-    /** Called when the activity is first created. */
+    /**
+     * Called when the activity is first created.
+     */
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drug_list);
         Toolbar toolbar = findViewById(R.id.drugListViewToolbar);
         setSupportActionBar(toolbar);
 
-
-
         // создаем адаптер
         fillData();
         drugListAdapter = new DrugListAdapter(this, listViewModels);
 
         // настраиваем список
-        ListView listView = (ListView) findViewById(R.id.drugListView);
+        ListView listView = findViewById(R.id.drugListView);
         listView.setAdapter(drugListAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
-            {
-                // по позиции получаем выбранный элемент
-                DrugListViewModel drugListViewModel = (DrugListViewModel) parent.getItemAtPosition(position);
-                Toast.makeText(v.getContext(), "Yeahhh",
+            public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
+                Toast.makeText(view.getContext(), "Adapter",
                         Toast.LENGTH_SHORT).show();
-
+                editDrug((DrugListViewModel) parent.getItemAtPosition(pos));
             }
         });
     }
@@ -64,19 +61,36 @@ public class DrugListActivity extends AppCompatActivity {
     // генерируем данные для адаптера
     void fillData() {
         for (int i = 1; i <= 20; i++) {
-            listViewModels.add(new DrugListViewModel(i,String.valueOf(i+1000),"Sirop",String.valueOf(i+50),"Head", new Date()));
+            listViewModels.add(new DrugListViewModel(i, String.valueOf(i + 1000), "Sirop", String.valueOf(i + 50), "Head", new Date()));
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_new: {
+                editDrug(null);
+                return true;
+            }
+//            case R.id.action_save: {
+//
+//                return true;
+//            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    public void editDrug(DrugListViewModel drugListViewModel) {
+        Intent intent = new Intent(getBaseContext(), EditDrugActivity.class);
+        intent.putExtra("DrugListViewModel", drugListViewModel);
+        startActivityForResult(intent,1);
+    }
 
-    // выводим информацию о корзине
-//    public void showResult(View v) {
-//        String result = "Товары в корзине:";
-//        for (Product p : drugListAdapter.getBox()) {
-//            if (p.box)
-//                result += "\n" + p.name;
-//        }
-//        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {return;}
+        DrugListViewModel drugListViewModel = (DrugListViewModel)data.getSerializableExtra("DrugViewListModelReturn");
+        Toast.makeText(this, "Success transfer back to Activity", Toast.LENGTH_SHORT).show();
+    }
 }

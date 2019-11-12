@@ -1,8 +1,9 @@
 package apptekaclient.spart.ru.appteka_client.listview.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class DrugListViewModel {
+public class DrugListViewModel implements Serializable {
     private long id;
     private String name;
     private String appointment;

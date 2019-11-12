@@ -16,6 +16,11 @@
     <string name="port">Enter Server Port</string>
     <string name="save">Save</string>
     <string name="action_save">Save</string>
+    <string name="drugName">Drug Name</string>
+    <string name="drugType">Drug Type</string>
+    <string name="drugCount">Drug Count</string>
+    <string name="drugAppointment">Drug Appointment</string>
+    <string name="drugDate">Drug Date</string>
     <string name="title_activity_drug_list">DrugListActivity</string>
 
 

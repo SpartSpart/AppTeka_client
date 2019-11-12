@@ -21,9 +21,12 @@ public interface ApiService {
     @GET("drugs/")
     Call<Collection<DrugModel>> getAllDrugs(@Header("Authorization") String authHeader);
 
+//////
     @POST("secrets/")
-    Call<Long> addSecret(@Header("Authorization") String authHeader, @Body DrugModel drugModel);
+    Call<Long> addDrug(@Header("Authorization") String authHeader, @Body DrugModel drugModel);
 
+///// ПУТИ ПРОВЕРЬ
+///
     @PUT("secrets/")
     Call<Void> updateSecrets(@Header("Authorization") String authHeader, @Body List<DrugModel> drugModels);
 
