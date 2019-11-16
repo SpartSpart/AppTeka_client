@@ -27,7 +27,6 @@
         </activity>
         <activity android:name=".activity.RegistrationActivity" />
         <activity android:name=".activity.SettingsActivity" />
-        <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.EnterActivity"
             android:label="@string/title_activity_drug_list"

@@ -30,15 +30,23 @@ public class DrugModel implements Serializable {
 
     @SerializedName("date")
     @Expose
-    private Date date;
+    private String date;
 
-    public DrugModel(long id, String name, String type, String count, String appointment, Date date) {
+    public DrugModel(long id, String name, String type, String count, String appointment, String date) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.count = count;
         this.appointment = appointment;
         this. date = date;
+    }
+
+    public DrugModel(String name, String type, String count, String appointment, String date) {
+        this.name = name;
+        this.type = type;
+        this.count = count;
+        this.appointment = appointment;
+        this.date = date;
     }
 
     public long getId() {
@@ -81,11 +89,11 @@ public class DrugModel implements Serializable {
         this.appointment = appointment;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }

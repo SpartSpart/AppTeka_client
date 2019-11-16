@@ -4,38 +4,37 @@ import android.os.AsyncTask;
 import android.util.Base64;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.Collection;
 
 import apptekaclient.spart.ru.appteka_client.api.ApiConnection;
 import apptekaclient.spart.ru.appteka_client.api.ApiService;
 import apptekaclient.spart.ru.appteka_client.api.model.DrugModel;
+import apptekaclient.spart.ru.appteka_client.api.model.TypeModel;
 import retrofit2.Call;
 import retrofit2.Response;
 
+/**
+ * Created by Pamela on 16.11.2019.
+ */
 
-public class AddDrug extends AsyncTask<Void, Void, Long> {
+public class GetAllTypes extends AsyncTask<Void, Void, Collection<TypeModel>> {
     private String authorization;
-    private DrugModel drugModel;
 
-
-
-    public AddDrug(String authorization, DrugModel drugModel) {
+    public GetAllTypes(String authorization) {
         this.authorization = authorization;
-        this.drugModel = drugModel;
     }
 
     @Override
-    protected Long doInBackground(Void... voids) {
+    protected Collection<TypeModel> doInBackground(Void... voids) {
 
         ApiService apiService = ApiConnection.getApiService();
 
         String authHeader = "Basic " + Base64.encodeToString(authorization.getBytes(), Base64.NO_WRAP);
-        Call<Long> call = apiService.addDrug(authHeader, drugModel);
+        Call<Collection<TypeModel>> call = apiService.getAllTypes(authHeader);
         try {
-            Response<Long> response = call.execute();
+            Response<Collection<TypeModel>> response = call.execute();
             if (response.isSuccessful())
                 return response.body();
-
         } catch (IOException e) {
             e.printStackTrace();
         }

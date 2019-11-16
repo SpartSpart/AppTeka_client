@@ -52,7 +52,6 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putString("Host",preferenceHost);
             editor.putString("Port",preferencePort);
             editor.commit();
-            ApiConnection.setBaseUrl(getHost(),getPort());
             finish();
             return true;
         }

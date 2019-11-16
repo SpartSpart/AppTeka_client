@@ -20,7 +20,7 @@
     <string name="drugType">Drug Type</string>
     <string name="drugCount">Drug Count</string>
     <string name="drugAppointment">Drug Appointment</string>
-    <string name="drugDate">Drug Date</string>
+    <string name="drugDate">DD/MM/YYYY</string>
     <string name="title_activity_drug_list">DrugListActivity</string>
 
 

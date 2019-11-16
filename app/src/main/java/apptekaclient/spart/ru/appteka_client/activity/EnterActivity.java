@@ -33,7 +33,7 @@ public class EnterActivity extends AppCompatActivity {
         password = findViewById(R.id.passwordText);
         Toolbar toolbar = findViewById(R.id.enterToolbar);
         setSupportActionBar(toolbar);
-        ApiConnection.setBaseUrl(getHost(), getPort());
+
 
     }
 
