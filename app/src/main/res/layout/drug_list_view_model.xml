@@ -3,73 +3,68 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
+    android:textColor="@color/defaultTextColor"
     android:orientation="horizontal">
 
 
-
-    <!--<CheckBox-->
-        <!--android:id="@+id/cbBox"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content">-->
-    <!--</CheckBox>-->
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
+        android:textColor="@color/defaultTextColor"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/drugName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text=""
-            android:textSize="15sp">
-        </TextView>
+            android:textStyle="bold"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="15sp"></TextView>
+
         <TextView
             android:id="@+id/drugAppointment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
+            android:textColor="@color/defaultTextColor"
             android:layout_marginRight="10dp"
-            android:text="">
-        </TextView>
+            android:text=""></TextView>
 
 
     </LinearLayout>
-    <LinearLayout
-    android:id="@+id/linearLayout2"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="5dp"
-    android:layout_weight="1"
-    android:orientation="vertical">
-    <TextView
-        android:id="@+id/drugCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="10dp"
-        android:textSize="15sp"
-        android:text="">
-    </TextView>
-    <TextView
-        android:id="@+id/drugDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginRight="10dp"
-        android:text="">
-    </TextView>
 
-</LinearLayout>
-    <ImageView
-        android:id="@+id/ivImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher">
-    </ImageView>
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_weight="1"
+        android:textColor="@color/defaultTextColor"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/drugCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="15sp"></TextView>
+
+        <TextView
+            android:id="@+id/drugDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/defaultTextColor"
+            android:text=""></TextView>
+
+    </LinearLayout>
+
 </LinearLayout>

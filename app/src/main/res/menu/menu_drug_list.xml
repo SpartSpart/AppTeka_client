@@ -14,6 +14,21 @@
         android:title="@string/action_save"
         android:icon="@drawable/ic_refresh_48dp"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/settingsText"
+        android:icon="@drawable/ic_settings_48dp"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_filter_warning_drugs"
+        android:orderInCategory="100"
+        android:title="Filter"
+        android:icon="@drawable/ic_refresh_48dp"
+        app:showAsAction="never"/>
+
+
+
 
 </menu>
 

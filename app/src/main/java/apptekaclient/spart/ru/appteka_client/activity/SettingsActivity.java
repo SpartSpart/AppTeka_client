@@ -6,29 +6,40 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.support.v7.widget.Toolbar;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import apptekaclient.spart.ru.appteka_client.R;
-import apptekaclient.spart.ru.appteka_client.api.ApiConnection;
+import apptekaclient.spart.ru.appteka_client.activity.listeners.SeekBarListener;
 
 public class SettingsActivity extends AppCompatActivity {
-    private EditText host;
-    private EditText port;
+    private SeekBar alarmCountSeekBar;
+    private SeekBar warningDateSeekBar;
+    private TextView alarmCountTxtView;
+    private TextView warningDateTxtView;
+
     private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        host = findViewById(R.id.host);
-        port = findViewById(R.id.port);
         Toolbar toolbar = findViewById(R.id.settingToolbar);
         setSupportActionBar(toolbar);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        host.setText(getHost());
-        port.setText(getPort());
+        alarmCountSeekBar = findViewById(R.id.alarmCountSeekBar);
+        warningDateSeekBar = findViewById(R.id.warningDateSeekBar);
 
+        alarmCountTxtView = findViewById(R.id.alarmCountTxtView);
+        warningDateTxtView = findViewById(R.id.warningDateTxtView);
+
+        alarmCountSeekBar.setOnSeekBarChangeListener(new SeekBarListener(alarmCountSeekBar,alarmCountTxtView));
+        warningDateSeekBar.setOnSeekBarChangeListener(new SeekBarListener(warningDateSeekBar,warningDateTxtView));
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+            alarmCountSeekBar.setProgress(sharedPreferences.getInt("AlarmCount",50));
+            warningDateSeekBar.setProgress(sharedPreferences.getInt("WarningDate",50));
 
     }
 
@@ -44,27 +55,31 @@ public class SettingsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_save) {
+        switch (id){
+            case R.id.action_save: {
 
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            String preferenceHost = host.getText().toString();
-            String preferencePort = port.getText().toString();
-            editor.putString("Host",preferenceHost);
-            editor.putString("Port",preferencePort);
-            editor.commit();
-            finish();
-            return true;
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("AlarmCount", Integer.valueOf((String) alarmCountTxtView.getText()));
+                editor.putInt("WarningDate", Integer.valueOf((String) warningDateTxtView.getText()));
+                editor.commit();
+                finish();
+                return true;
+            }
+            case R.id.action_cancel:{
+                finish();
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
 
-    String getHost(){return sharedPreferences.getString("Host","");}
-
-    String getPort(){
-        return sharedPreferences.getString("Port","");
-    }
+//    String getHost(){return sharedPreferences.getString("Host","");}
+//
+//    String getPort(){
+//        return sharedPreferences.getString("Port","");
+//    }
 
 
 }

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,13 +30,14 @@ import apptekaclient.spart.ru.appteka_client.activity.additional.DrugType;
 public class DrugListActivity extends AppCompatActivity {
 
     ListView listView;
-    ArrayList<DrugModel> listViewModels = new ArrayList<DrugModel>();
+    ArrayList<DrugModel> listViewModels;
     DrugListAdapter drugListAdapter;
     private int selectedListPosition;
     public static String authorization;
     private ArrayList<String> types;
     private ArrayList<String> appointments;
     private boolean newDrug;
+
 
 
     @Override
@@ -52,6 +55,7 @@ public class DrugListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drug_list);
         Toolbar toolbar = findViewById(R.id.drugListViewToolbar);
         setSupportActionBar(toolbar);
+        listViewModels = new ArrayList<DrugModel>();
         selectedListPosition = 0;
         authorization = "App:0000";
 
@@ -118,6 +122,15 @@ public class DrugListActivity extends AppCompatActivity {
 
                 return true;
             }
+            case R.id.action_settings: {
+                settings();
+                return true;
+            }
+            case R.id.action_filter_warning_drugs:{
+
+                return true;
+            }
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -151,13 +164,14 @@ public class DrugListActivity extends AppCompatActivity {
         }
 
         selectedListPosition = 0;
-        drugListAdapter.notifyDataSetChanged();
+//        drugListAdapter.notifyDataSetChanged();
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        drugListAdapter.notifyDataSetChanged();
 
     }
 
@@ -168,8 +182,6 @@ public class DrugListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long l) {
-                Toast.makeText(view.getContext(), "Go to Edit Activity",
-                        Toast.LENGTH_SHORT).show();
                 editDrug((DrugModel) parent.getItemAtPosition(pos));
                 selectedListPosition = pos;
                 newDrug = false;
@@ -233,6 +245,11 @@ public class DrugListActivity extends AppCompatActivity {
         DrugAppointment drugAppointment = new DrugAppointment();
         appoinments = drugAppointment.getAppointments();
         return appoinments;
+    }
+
+    private void settings(){
+        Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+        startActivity(intent);
     }
 
 }

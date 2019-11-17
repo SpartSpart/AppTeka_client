@@ -8,7 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -17,16 +19,18 @@ import java.util.concurrent.ExecutionException;
 
 import apptekaclient.spart.ru.appteka_client.R;
 import apptekaclient.spart.ru.appteka_client.activity.additional.DateTextWatcher;
+import apptekaclient.spart.ru.appteka_client.activity.listeners.SeekBarListener;
 import apptekaclient.spart.ru.appteka_client.api.model.DrugModel;
 import apptekaclient.spart.ru.appteka_client.requests.AddDrug;
 import apptekaclient.spart.ru.appteka_client.requests.UpdateDrug;
 
 public class EditDrugActivity extends AppCompatActivity {
     private EditText drugName;
-    private EditText drugCount;
     private EditText drugDate;
     private Spinner typeSpinner;
     private Spinner appointmentSpinner;
+    private SeekBar countSeekBar;
+    private TextView countTxtView;
     private DrugModel drugModel;
     private String authorization;
     private ArrayList<String> types;
@@ -41,7 +45,6 @@ public class EditDrugActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.editDrugToolbar);
         setSupportActionBar(toolbar);
         drugName = findViewById(R.id.drugName);
-        drugCount = findViewById(R.id.drugCount);
         drugDate = findViewById(R.id.drugDate);
 
         //TextWatcher for Date EditText
@@ -49,6 +52,12 @@ public class EditDrugActivity extends AppCompatActivity {
 
         typeSpinner = findViewById(R.id.drugTypeSpinner);
         appointmentSpinner = findViewById(R.id.drugAppointmentSpinner);
+
+        countSeekBar = findViewById(R.id.countSeekBar);
+        countTxtView = findViewById(R.id.alarmCountTxtView);
+        countSeekBar.setOnSeekBarChangeListener(new SeekBarListener(countSeekBar,countTxtView));
+
+
         authorization = DrugListActivity.authorization;
         newDrug = true;
 
@@ -57,7 +66,7 @@ public class EditDrugActivity extends AppCompatActivity {
 
             //заполнение полей, поля Тип и Назначение заполняются методами addTypeSpinner и addAppointmentSpinner
             drugName.setText(drugModel.getName());
-            drugCount.setText(drugModel.getCount());
+            countSeekBar.setProgress(Integer.valueOf(drugModel.getCount()));
             drugDate.setText(drugModel.getDate());
             newDrug = false;
         }
@@ -79,8 +88,6 @@ public class EditDrugActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.action_cancel: {
-//                String stringDate = "2020-12-12";
-//                sendDrugToDB(new DrugModel("111","Сироп","333","Горло",stringDate));
                 finish();
                 return true;
             }
@@ -88,7 +95,7 @@ public class EditDrugActivity extends AppCompatActivity {
                 try {
                     saveDrug(getDrug(drugName.getText().toString(),
                             typeSpinner.getSelectedItem().toString(),
-                            drugCount.getText().toString(),
+                            countTxtView.getText().toString(),
                             appointmentSpinner.getSelectedItem().toString(),
                             drugDate.getText().toString()));
                 } catch (ParseException e) {
@@ -193,4 +200,5 @@ public class EditDrugActivity extends AppCompatActivity {
             }
         }
     }
+
 }
