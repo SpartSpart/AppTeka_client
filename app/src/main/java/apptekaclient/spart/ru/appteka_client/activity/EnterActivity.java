@@ -22,6 +22,7 @@ public class EnterActivity extends AppCompatActivity {
     private EditText passwordEditTxt;
     private CheckBox rememberCheckBox;
     private SharedPreferences sharedPreferences;
+    private final String SERVER_CONNECTION_FAILED = "Server connection failed";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class EnterActivity extends AppCompatActivity {
         fillLoginPasswordFromMemory();
     }
 
-    public void showDrugListActivity(View view) throws Exception {
+    public void showDrugListActivity(View view) {
         String authorization = loginEditTxt.getText() + ":" + passwordEditTxt.getText();
         LogIn logIn = new LogIn(authorization);
         String sessionId;
@@ -52,13 +53,16 @@ public class EnterActivity extends AppCompatActivity {
             try {
                 sessionId = logIn.execute().get();
                 if (sessionId != null) {
-                    Toast.makeText(getApplicationContext(), "Login Correct", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getBaseContext(),DrugListActivity.class);
-                    intent.putExtra("Authorization", authorization);
-                    Crypto.setKeys(loginEditTxt.getText().toString(), passwordEditTxt.getText().toString());
-//                    new Crypto().setKey(loginEditTxt.getText().toString());
-                    rememberLoginPasswordToMemory(rememberCheckBox.isChecked());
-                    startActivity(intent);
+                    if (sessionId.equals(SERVER_CONNECTION_FAILED))
+                        Toast.makeText(this, SERVER_CONNECTION_FAILED, Toast.LENGTH_SHORT).show();
+                    else {
+                        Toast.makeText(getApplicationContext(), "Login Correct", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getBaseContext(), DrugListActivity.class);
+                        intent.putExtra("Authorization", authorization);
+                        Crypto.setKeys(loginEditTxt.getText().toString(), passwordEditTxt.getText().toString());
+                        rememberLoginPasswordToMemory(rememberCheckBox.isChecked());
+                        startActivity(intent);
+                    }
                 } else
                     Toast.makeText(getApplicationContext(), "Login/Password Incorrect", Toast.LENGTH_LONG).show();
             } catch (InterruptedException e) {
@@ -66,9 +70,7 @@ public class EnterActivity extends AppCompatActivity {
             } catch (ExecutionException e) {
                 Toast.makeText(getApplicationContext(), "Error: "+e.toString(), Toast.LENGTH_LONG).show();
             }
-            catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Check Connection Settings", Toast.LENGTH_LONG).show();
-            }
+
         }
     }
 
