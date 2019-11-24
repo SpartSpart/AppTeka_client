@@ -7,6 +7,20 @@
     android:textColor="@color/defaultTextColor"
     android:orientation="horizontal">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/drugStatusImage"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_status_ok">
+        </ImageView>
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -40,7 +54,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_weight="1"
@@ -63,8 +77,13 @@
             android:layout_gravity="right"
             android:layout_marginRight="10dp"
             android:textColor="@color/defaultTextColor"
-            android:text=""></TextView>
+            android:text="">
+        </TextView>
+
+
 
     </LinearLayout>
+
+
 
 </LinearLayout>

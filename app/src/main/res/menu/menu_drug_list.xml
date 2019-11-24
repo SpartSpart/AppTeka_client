@@ -21,14 +21,21 @@
         android:icon="@drawable/ic_settings_48dp"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/action_filter_warning_drugs"
+        android:id="@+id/action_filter_warning_count_drugs"
         android:orderInCategory="100"
-        android:title="Filter"
-        android:icon="@drawable/ic_refresh_48dp"
+        android:title="Count Warning"
         app:showAsAction="never"/>
 
-
-
+    <item
+        android:id="@+id/action_filter_warning_date_drugs"
+        android:orderInCategory="100"
+        android:title="Date Warning"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_filter_alarm_date_drugs"
+        android:orderInCategory="100"
+        android:title="Date Alarm"
+        app:showAsAction="never"/>
 
 </menu>
 

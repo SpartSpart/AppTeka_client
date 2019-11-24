@@ -12,14 +12,19 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import apptekaclient.spart.ru.appteka_client.R;
+import apptekaclient.spart.ru.appteka_client.activity.additional.FilterByWarning;
+import apptekaclient.spart.ru.appteka_client.activity.additional.SearchByNameTextWatcher;
 import apptekaclient.spart.ru.appteka_client.api.model.DrugModel;
 import apptekaclient.spart.ru.appteka_client.activity.additional.DrugListAdapter;
 import apptekaclient.spart.ru.appteka_client.requests.DeleteDrug;
@@ -36,7 +41,9 @@ public class DrugListActivity extends AppCompatActivity {
     public static String authorization;
     private ArrayList<String> types;
     private ArrayList<String> appointments;
+    private EditText searchDrugByName;
     private boolean newDrug;
+    private SearchByNameTextWatcher searchByNameTextWatcher;
 
 
 
@@ -54,24 +61,34 @@ public class DrugListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drug_list);
         Toolbar toolbar = findViewById(R.id.drugListViewToolbar);
+        searchDrugByName =findViewById(R.id.searchDrugByName);
         setSupportActionBar(toolbar);
         listViewModels = new ArrayList<DrugModel>();
         selectedListPosition = 0;
-        authorization = "App:0000";
+        authorization = authorization();
 
-        //fill listview
+        //fill listViewModels, types, appointments
         try {
             fillData();
-            types = getDrugTypes();
-            appointments = getDrugAppointments();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        // создаем адаптер
+        // create adapter
         drugListAdapter = new DrugListAdapter(this, listViewModels);
 
+        searchByNameTextWatcher =new SearchByNameTextWatcher(drugListAdapter);
+
+        searchDrugByName.addTextChangedListener(searchByNameTextWatcher);
+
+        //update settings parameters
         listViewSettings ();
 
+     }
+
+     private String authorization(){
+        String authorization = (String) getIntent().getSerializableExtra("Authorization");
+        return authorization;
      }
 
 
@@ -79,10 +96,21 @@ public class DrugListActivity extends AppCompatActivity {
     void fillData() {
 
             ArrayList <DrugModel> drugModelArrayList = new ArrayList<>(getAllDrugs(authorization));
+            listViewModels.clear();
 
-            for (int i = 1; i < drugModelArrayList.size(); i++){
+            for (int i = 0; i < drugModelArrayList.size(); i++){
                 listViewModels.add(drugModelArrayList.get(i));
             }
+
+        try {
+            types = getDrugTypes();
+            appointments = getDrugAppointments();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public Collection<DrugModel> getAllDrugs(String authorization) {
@@ -115,7 +143,9 @@ public class DrugListActivity extends AppCompatActivity {
                 try {
                     listViewModels.clear();
                     fillData();
+                    drugListAdapter.getFilter().filter(null);
                     drugListAdapter.notifyDataSetChanged();
+                    searchDrugByName.setText("");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -126,8 +156,24 @@ public class DrugListActivity extends AppCompatActivity {
                 settings();
                 return true;
             }
-            case R.id.action_filter_warning_drugs:{
+            case R.id.action_filter_warning_count_drugs:{
+                drugListAdapter.filterByWarning = FilterByWarning.WARNING_COUNT;
 
+                drugListAdapter.getFilter().filter("IGNORE");
+
+
+                return true;
+            }
+            case R.id.action_filter_warning_date_drugs:{
+                drugListAdapter.filterByWarning = FilterByWarning.WARNING_DATE;
+
+                drugListAdapter.getFilter().filter("IGNORE");
+                return true;
+            }
+            case R.id.action_filter_alarm_date_drugs:{
+                drugListAdapter.filterByWarning = FilterByWarning.ALARM_DATE;
+
+                drugListAdapter.getFilter().filter("IGNORE");
                 return true;
             }
 
@@ -148,15 +194,15 @@ public class DrugListActivity extends AppCompatActivity {
         if (data == null) {return;}
         DrugModel drugModel = (DrugModel)data.getSerializableExtra("DrugModelReturn");
         try {
-        if (newDrug)  //проверка на новую запись или обновляемую
-            listViewModels.add(drugModel);
-        else {
-            listViewModels.get(selectedListPosition).setName(drugModel.getName());
-            listViewModels.get(selectedListPosition).setType(drugModel.getType());
-            listViewModels.get(selectedListPosition).setCount(drugModel.getCount());
-            listViewModels.get(selectedListPosition).setAppointment(drugModel.getAppointment());
-            listViewModels.get(selectedListPosition).setDate(drugModel.getDate());
-        }
+            if (newDrug)  //проверка на новую запись или обновляемую
+                listViewModels.add(drugModel);
+            else {
+                listViewModels.get(selectedListPosition).setName(drugModel.getName());
+                listViewModels.get(selectedListPosition).setType(drugModel.getType());
+                listViewModels.get(selectedListPosition).setCount(drugModel.getCount());
+                listViewModels.get(selectedListPosition).setAppointment(drugModel.getAppointment());
+                listViewModels.get(selectedListPosition).setDate(drugModel.getDate());
+            }
 
         }
         catch (Exception e) {
@@ -164,20 +210,66 @@ public class DrugListActivity extends AppCompatActivity {
         }
 
         selectedListPosition = 0;
-//        drugListAdapter.notifyDataSetChanged();
+
+
 
     }
+
+    private void refreshFilteredDrugs(){
+        switch (drugListAdapter.filterByWarning){
+            case NONE:{
+
+                drugListAdapter.getFilter().filter(searchDrugByName.getText());
+                break;
+            }
+            case WARNING_COUNT:{
+
+                drugListAdapter.getFilter().filter("IGNORE");
+
+                break;
+            }
+            case WARNING_DATE:{
+
+                drugListAdapter.getFilter().filter("IGNORE");
+
+                break;
+            }
+            case ALARM_DATE:{
+
+                drugListAdapter.getFilter().filter("IGNORE");
+                searchDrugByName.setText("");
+                break;
+            }
+        }
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-        drugListAdapter.notifyDataSetChanged();
+        refreshDrugListAdapter();
+   }
 
+    private void refreshDrugListAdapter(){
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                listViewModels.clear();
+                fillData();
+                drugListAdapter.notifyDataSetChanged();
+                refreshFilteredDrugs();
+           }
+        });
     }
+
+
 
     private void listViewSettings() {
         // настраиваем список
         listView = findViewById(R.id.drugListView);
+        listView.setTextFilterEnabled(true);
+        listView.setFocusable(true);
+
         listView.setAdapter(drugListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -202,18 +294,18 @@ public class DrugListActivity extends AppCompatActivity {
     private void deleteDialog(final Long drugId, final String drugName, final int listViewPosition){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Delete Item");
+        builder.setTitle("Delete Drug");
         builder.setMessage("Delete "+drugName+"?");
 
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(DrugListActivity.this, "Deleting "+drugName, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(DrugListActivity.this, "Deleting "+drugName, Toast.LENGTH_SHORT).show();
                 DeleteDrug deleteDrug = new DeleteDrug(authorization, drugId);
                 deleteDrug.execute();
 
                 listViewModels.remove(listViewPosition);
-                drugListAdapter.notifyDataSetChanged();
+                refreshDrugListAdapter();
 
                 dialog.dismiss();
             }
@@ -223,8 +315,6 @@ public class DrugListActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                // Do nothing
                 dialog.dismiss();
             }
         });

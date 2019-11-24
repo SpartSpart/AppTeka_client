@@ -7,21 +7,20 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.concurrent.ExecutionException;
 
 import apptekaclient.spart.ru.appteka_client.R;
-import apptekaclient.spart.ru.appteka_client.api.ApiConnection;
 import apptekaclient.spart.ru.appteka_client.cryptography.Crypto;
 import apptekaclient.spart.ru.appteka_client.requests.LogIn;
 
 public class EnterActivity extends AppCompatActivity {
-    private EditText login;
-    private EditText password;
+    private EditText loginEditTxt;
+    private EditText passwordEditTxt;
+    private CheckBox rememberCheckBox;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -29,16 +28,23 @@ public class EnterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         setContentView(R.layout.activity_enter);
-        login = findViewById(R.id.loginText);
-        password = findViewById(R.id.passwordText);
+        loginEditTxt = findViewById(R.id.loginText);
+        passwordEditTxt = findViewById(R.id.passwordText);
+        rememberCheckBox = findViewById(R.id.checkRememberLoginPassword);
         Toolbar toolbar = findViewById(R.id.enterToolbar);
         setSupportActionBar(toolbar);
-
+        fillLoginPasswordFromMemory();
 
     }
 
-    public void showMainActivity(View view) throws Exception {
-        String authorization = login.getText() + ":" + password.getText();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fillLoginPasswordFromMemory();
+    }
+
+    public void showDrugListActivity(View view) throws Exception {
+        String authorization = loginEditTxt.getText() + ":" + passwordEditTxt.getText();
         LogIn logIn = new LogIn(authorization);
         String sessionId;
 
@@ -49,8 +55,9 @@ public class EnterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Login Correct", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(getBaseContext(),DrugListActivity.class);
                     intent.putExtra("Authorization", authorization);
-                    Crypto.setKeys(login.getText().toString(),password.getText().toString());
-//                    new Crypto().setKey(login.getText().toString());
+                    Crypto.setKeys(loginEditTxt.getText().toString(), passwordEditTxt.getText().toString());
+//                    new Crypto().setKey(loginEditTxt.getText().toString());
+                    rememberLoginPasswordToMemory(rememberCheckBox.isChecked());
                     startActivity(intent);
                 } else
                     Toast.makeText(getApplicationContext(), "Login/Password Incorrect", Toast.LENGTH_LONG).show();
@@ -72,37 +79,32 @@ public class EnterActivity extends AppCompatActivity {
         startActivity(intObj);
     }
 
-    public void showSettingsActivity(View view) {
-        Intent intObj = new Intent(this, SettingsActivity.class);
-        startActivity(intObj);
+    private void fillLoginPasswordFromMemory(){
+        String login = sharedPreferences.getString("Login","");
+        String password = sharedPreferences.getString("Password","");
+        boolean checked = sharedPreferences.getBoolean("RememberIsChecked",false);
+        loginEditTxt.setText(login);
+        passwordEditTxt.setText(password);
+        rememberCheckBox.setChecked(checked);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_enter, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            showSettingsActivity(this.getCurrentFocus());
-            return true;
+    private void rememberLoginPasswordToMemory(boolean checked){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (checked){
+            editor.putString("Login", loginEditTxt.getText().toString());
+            editor.putString("Password", passwordEditTxt.getText().toString());
+            editor.putBoolean("RememberIsChecked",checked);
         }
-
-        return super.onOptionsItemSelected(item);
+        else {
+            editor.putString("Login", "");
+            editor.putString("Password", "");
+            editor.putBoolean("RememberIsChecked",false);
+        }
+        editor.commit();
     }
 
-    String getHost() {
-        return sharedPreferences.getString("Host", "");
-    }
-
-    String getPort() {
-        return sharedPreferences.getString("Port", "");
+    public void forgetPassword(View view){
+        Toast.makeText(this, "Doesn't work yet.", Toast.LENGTH_SHORT).show();
     }
 
 

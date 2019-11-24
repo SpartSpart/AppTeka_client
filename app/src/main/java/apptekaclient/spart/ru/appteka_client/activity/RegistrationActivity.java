@@ -1,7 +1,10 @@
 package apptekaclient.spart.ru.appteka_client.activity;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +22,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText passwordTxt;
     private EditText confirmPasswordTxt;
     private EditText emailTxt;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,11 @@ public class RegistrationActivity extends AppCompatActivity {
         passwordTxt = findViewById(R.id.passwordText);
         confirmPasswordTxt = findViewById(R.id.confirmPasswordText);
         emailTxt = findViewById(R.id.emailText);
+        Toolbar toolbar = findViewById(R.id.registrationToolbar);
+        setSupportActionBar(toolbar);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         Button registrationBtn = findViewById(R.id.registrationBtn);
         ApiService apiService = ApiConnection.getApiService();
 
@@ -48,6 +57,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         AddUser addUser = new AddUser(login, password, email);
                         try {
                             if (addUser.execute().get()) {
+                                rememberLoginPasswordToMemory();
                                 Toast.makeText(getApplicationContext(), "Successfull registration ", Toast.LENGTH_LONG).show();
                                 finish();
                             }
@@ -71,6 +81,22 @@ public class RegistrationActivity extends AppCompatActivity {
 
     boolean checkPasswords (String password, String confirmPassword){
         return password.equals(confirmPassword);
+    }
+
+//    private void fillLoginPasswordFromMemory(){
+//        String login = sharedPreferences.getString("Login","");
+//        String password = sharedPreferences.getString("Password","");
+//        boolean checked = sharedPreferences.getBoolean("RememberIsChecked",false);
+//        loginEditTxt.setText(login);
+//        passwordEditTxt.setText(password);
+//        rememberCheckBox.setChecked(checked);
+//    }
+
+    private void rememberLoginPasswordToMemory(){
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("Login", loginTxt.getText().toString());
+            editor.putString("Password", "");
+            editor.commit();
     }
 
 }

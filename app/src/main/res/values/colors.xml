@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorDarkGrey">#aaaaaa</color>
+    <color name="colorDarkGrey">#a49999</color>
     <color name="colorDarkBlue">#00095d</color>
     <color name="defaultTextColor">#434141</color>
     <color name="alarmTextColor">#f10202</color>

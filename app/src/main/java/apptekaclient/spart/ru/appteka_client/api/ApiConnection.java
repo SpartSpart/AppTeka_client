@@ -2,7 +2,7 @@ package apptekaclient.spart.ru.appteka_client.api;
 
 public class ApiConnection {
 
-    private static String BASE_URL="http://192.168.43.222:8080/api/";
+    private static String BASE_URL="http://192.168.1.141:8080/api/";
     private ApiConnection() {}
 
     public static ApiService getApiService() throws IllegalArgumentException {
